@@ -19,6 +19,9 @@ io.on('connection', (socket)=>{
     socket.on('disconnect', ()=>{
         io.emit('message','user has disconnected from the chat')
     })
+    socket.on('chatmessage', (msg)=>{
+       io.emit('message',msg);
+    })
 })
 
 server.listen(PORT,()=>{
