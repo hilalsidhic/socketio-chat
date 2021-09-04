@@ -24,13 +24,22 @@ io.on('connection', (socket)=>{
 
      socket.broadcast.to(user.room).emit('message',formatmessage(bot,`A ${username} has joined the chat room`))
 
+     io.to(user.room).emit('roomUsers',{
+        room: user.room,
+        users: getroomusers(user.room)
+    })
+
     })
 
     socket.on('disconnect', ()=>{
        const user= userleave(socket.id)
         if(user){
-            console.log(user[0]);
-            io.to(user[0].room).emit('message',formatmessage(bot,`${user[0].username} has disconnected from the chat`));
+            io.to(user.room).emit('message',formatmessage(bot,`${user.username} has disconnected from the chat`));
+            io.to(user.room).emit('roomUsers',{
+                room: user.room,
+                users:getroomusers(user.room)
+            })
+            
         }
     })
 
